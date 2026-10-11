@@ -1,0 +1,219 @@
+/* ==========================================================
+   intro.css: the opening book animation for One Flip Away
+   (the movement itself is in animations.js)
+   ========================================================== */
+
+/* Full-screen dark backdrop that sits on top of the comic until the book is done */
+.intro {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3.2rem;
+  background: radial-gradient(ellipse at 50% 35%, #232a7a 0%, #0b0d2e 75%);
+  overflow: hidden;
+  /* Failsafe: if animations.js never loads, hide the intro after 6 seconds
+     so the comic is not blocked. animations.js cancels this when it starts. */
+  animation: introFailsafe 0.01s 6s forwards;
+}
+
+@keyframes introFailsafe {
+  to { opacity: 0; visibility: hidden; pointer-events: none; }
+}
+
+/* While the intro plays, the page behind it cannot be scrolled */
+html.intro-lock {
+  overflow: hidden;
+  scrollbar-gutter: stable;
+}
+
+/* ---------- The book ---------- */
+
+.book-stage {
+  perspective: 1600px;      /* this is what makes the flipping look 3D */
+}
+
+.book {
+  --w: min(44vw, 340px, 52vh);       /* width of ONE page */
+  --paper: #fbf5e3;
+  position: relative;
+  width: var(--w);
+  height: calc(var(--w) * 4 / 3);
+  transform-style: preserve-3d;
+  cursor: pointer;
+}
+
+/* Soft shadow on the "table" under the book */
+.book-shadow {
+  position: absolute;
+  left: 0;
+  bottom: -26px;
+  width: 100%;
+  height: 28px;
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0) 70%);
+  filter: blur(6px);
+  pointer-events: none;
+  transform-origin: right center;
+}
+
+/* The right-hand page that stays put when the book is open */
+.base-page,
+.leaf {
+  position: absolute;
+  inset: 0;
+}
+
+.base-page {
+  background: var(--paper);
+  border-radius: 2px 6px 6px 2px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
+}
+
+/* A leaf is one sheet of paper: it has a front side and a back side */
+.leaf {
+  transform-style: preserve-3d;
+}
+
+.face {
+  position: absolute;
+  inset: 0;
+  background: var(--paper);
+  border-radius: 2px 6px 6px 2px;
+  overflow: hidden;
+  backface-visibility: hidden;          /* hide a side when it faces away */
+  -webkit-backface-visibility: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.face.back {
+  transform: rotateY(180deg);           /* so the back is readable after the flip */
+  border-radius: 6px 2px 2px 6px;
+}
+
+/* Darker strip near the spine, like paper curving into the binding */
+.base-page::before,
+.face::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0) 12%);
+}
+
+.face.back::before {
+  background: linear-gradient(270deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0) 12%);
+}
+
+/* Shadow that darkens a page as it turns away from the light (animated in JS) */
+.shade {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.05));
+}
+
+.face.back .shade {
+  background: linear-gradient(270deg, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.05));
+}
+
+/* Faint ruled lines so the blank pages feel like paper */
+.lines {
+  position: absolute;
+  inset: 12% 12% 12% 14%;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent 0 24px,
+    rgba(90, 70, 30, 0.12) 24px 25px
+  );
+}
+
+.page-note {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 42%;
+  margin: 0;
+  text-align: center;
+  font: italic calc(var(--w) * 0.075) Palatino, Georgia, serif;
+  color: #5e4d2a;
+  line-height: 1.4;
+}
+
+/* ---------- The cover ---------- */
+
+.cover .front {
+  background:
+    repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.025) 0 2px, transparent 2px 5px),
+    linear-gradient(135deg, #272e91, #12155a);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 16%;
+}
+
+.cover-frame {
+  position: absolute;
+  inset: 5%;
+  border: 2px solid #d9a900;
+  box-shadow: inset 0 0 0 4px #191970, inset 0 0 0 5px rgba(217, 169, 0, 0.55);
+  pointer-events: none;
+}
+
+.cover-title {
+  margin: 0 0 0.6em;
+  font: bold calc(var(--w) * 0.13) Palatino, Georgia, serif;
+  color: #f2ca35;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  line-height: 1.15;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.4);
+}
+
+.cover-sub {
+  margin: 0;
+  font: calc(var(--w) * 0.05) Palatino, Georgia, serif;
+  color: ivory;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+/* Inside of the cover */
+.cover .back {
+  background: repeating-linear-gradient(45deg, #e8c45a 0 6px, #dfb847 6px 12px);
+}
+
+/* ---------- Buttons ---------- */
+
+.intro-open {
+  font: bold 1rem Palatino, Georgia, serif;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 0.8rem 1.8rem;
+  color: #111;
+  background: #f2ca35;
+  border: 3px solid #111;
+  box-shadow: 5px 5px 0 #d9a900;
+  cursor: pointer;
+}
+
+.intro-open:hover {
+  transform: translate(-2px, -2px);
+}
+
+.intro-skip {
+  position: absolute;
+  right: 1.5rem;
+  bottom: 1.2rem;
+  background: none;
+  border: 0;
+  color: rgba(255, 255, 240, 0.7);
+  font: 0.9rem Palatino, Georgia, serif;
+  text-decoration: underline;
+  cursor: pointer;
+}
