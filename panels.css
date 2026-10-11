@@ -1,0 +1,38 @@
+.panel {
+  position: relative;
+  margin: 0;
+  overflow: hidden;
+  background: ivory;
+  border: 5px solid #111;
+  outline: 3px solid #d9a900;
+  outline-offset: -12px;
+  box-shadow: 8px 8px 0 midnightblue;
+}
+.panel:nth-child(odd) { transform: rotate(-0.6deg); }
+.panel:nth-child(even) { transform: rotate(0.6deg); }
+.panel::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  border-top: 24px solid #d9a900;
+  border-left: 24px solid transparent;
+  pointer-events: none;
+}
+.panel img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+.panel-caption {
+  margin: 0;
+  padding: 0.65rem 0.8rem;
+  border-top: 3px solid #111;
+  background: #f2ca35;
+  color: #111;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font: bold 0.85rem Palatino, Georgia, serif;
+}

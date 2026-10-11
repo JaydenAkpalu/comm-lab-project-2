@@ -1,0 +1,39 @@
+ .site-header, .site-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  font-family: Palatino, Georgia, serif;
+  color: midnightblue;
+}
+.site-header {
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+.site-header h1 { margin: 0; font-size: clamp(2rem, 5vw, 3.5rem); }
+.site-header p, .site-footer p { margin: 0; }
+.comic-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+  width: min(1200px, calc(100% - 2rem));
+  margin: 0 auto;
+  align-items: start;
+}
+.site-footer {
+  justify-content: space-between;
+  margin-top: 2rem;
+  border-top: 2px solid midnightblue;
+}
+.site-footer a { color: inherit; text-underline-offset: 0.2em; }
+.site-footer a:focus-visible { outline: 3px solid midnightblue; outline-offset: 4px; }
+@media (max-width: 850px) {
+  .comic-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+}
+@media (max-width: 560px) {
+  .comic-grid { grid-template-columns: 1fr; width: min(480px, calc(100% - 1.25rem)); }
+  .site-header, .site-footer { padding: 1rem; }
+}
