@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="panels.css">
   <link rel="stylesheet" href="site.css">
   <link rel="stylesheet" href="intro.css">
+  <link rel="stylesheet" href="story.css">
 </head>
 <body id="top">
   <!-- Opening book animation (styles in intro.css, movement in animations.js) -->
@@ -61,6 +62,11 @@
     <h1>One Flip Away</h1>
     <p>A journey through NYU Abu Dhabi, one page at a time.</p>
   </header>
+  <nav class="story-toolbar" aria-label="Reading controls" hidden>
+    <p id="storyProgress" role="status" aria-live="polite">Chapter 1 of 4 · The invitation</p>
+    <button id="showAll" type="button">Show all panels</button>
+    <button id="restartStory" type="button">Restart story</button>
+  </nav>
   <main>
     <section class="comic-grid" aria-label="One Flip Away comic panels">
       <div class="panel">
@@ -76,6 +82,11 @@
       <div class="panel">
         <img src="assets/panel-04.png" alt="The brochure seems to pull him into its campus scenes." loading="lazy" decoding="async">
         <p class="panel-caption">Panel 3</p>
+        <div class="story-choice" data-gate="enter" hidden>
+          <p class="choice-label">The invitation</p>
+          <p>The campus feels almost close enough to touch.</p>
+          <button type="button" data-action="enter">Open the brochure <span aria-hidden="true">→</span></button>
+        </div>
       </div>
 
       <div class="panel">
@@ -111,6 +122,15 @@
       <div class="panel">
         <img src="assets/panel-11.png" alt="He gets stuck on a problem set while Layla encourages him that nobody does it alone." loading="lazy" decoding="async">
         <p class="panel-caption">Panel 10</p>
+        <div class="story-choice" data-gate="help" hidden>
+          <p class="choice-label">You don't have to do it alone</p>
+          <p>The problem isn't getting any easier. What will you do?</p>
+          <div class="choice-buttons">
+            <button type="button" class="secondary" data-action="alone">Keep trying alone</button>
+            <button type="button" data-action="help">Ask Layla</button>
+          </div>
+          <p class="choice-response" data-response="alone" role="status" hidden>Another attempt. The same dead end. Maybe asking is how I move forward.</p>
+        </div>
       </div>
 
       <div class="panel">
@@ -131,6 +151,15 @@
       <div class="panel">
         <img src="assets/panel-16.png" alt="The page begins to close as he calls out to Layla." loading="lazy" decoding="async">
         <p class="panel-caption">Panel 14</p>
+        <div class="story-choice" data-gate="close" hidden>
+          <p class="choice-label">Before the page turns</p>
+          <p>You can leave this place. What will you take with you?</p>
+          <div class="choice-buttons">
+            <button type="button" class="secondary" data-action="linger">One more moment</button>
+            <button type="button" data-action="close">Close the brochure</button>
+          </div>
+          <p class="choice-response" data-response="linger" role="status" hidden>The place was new. The feeling of being understood was what I wanted to keep.</p>
+        </div>
       </div>
 
       <div class="panel">
@@ -149,6 +178,7 @@
     <a href="#top">Back to top</a>
   </footer>
 
+  <script src="story.js"></script>
   <!-- Animation: GSAP + ScrollTrigger (load order matters), then our own file -->
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/gsap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/ScrollTrigger.min.js"></script>
